@@ -7,7 +7,9 @@ public interface HttpZipLibrary {
 
     void downloadFile(URL url, File outFile);
 
-    void zipFile(File inFile, File outFile);
+    void zipFile(File unzippedFile, File zippedFile);
+
+    void zipDirectory(File unzippedDirectory, File zippedDirectory);
 
     void unzipFile(File zippedFile, File unzippedFile);
 }
