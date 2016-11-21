@@ -6,15 +6,18 @@ import pl.ppkwu.lab.api.EncryptionLibrary;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class EncryptionLibraryImpl implements EncryptionLibrary {
-
-    private static final String ALGORITHM = "AES";
-    private static final String TRANSFORMATION = "AES";
 
     private EncryptionKey encryptionKey;
 
@@ -38,7 +41,19 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
 
     @Override
     public String fileChecksum(File file, ChecksumAlgorithm checksumAlgorithm) {
-        return null;
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance(checksumAlgorithm.toString().toUpperCase());
+            md.update(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+            byte[] digest = md.digest();
+            return DatatypeConverter.printHexBinary(digest).toUpperCase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
     @Override
@@ -48,8 +63,8 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
 
     private void doCrypto(int cipherMode, File inputFile, File outputFile) {
         try {
-            Key secretKey = new SecretKeySpec(encryptionKey.getValue().getBytes(), ALGORITHM);
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+            Key secretKey = new SecretKeySpec(encryptionKey.getValue().getBytes(), "AES");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(cipherMode, secretKey);
 
             FileInputStream inputStream = new FileInputStream(inputFile);
@@ -57,13 +72,11 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
             inputStream.read(inputBytes);
 
             byte[] outputBytes = cipher.doFinal(inputBytes);
-
             FileOutputStream outputStream = new FileOutputStream(outputFile);
             outputStream.write(outputBytes);
 
             inputStream.close();
             outputStream.close();
-
         } catch (Exception e) {
             throw new RuntimeException("Error encrypting/decrypting file", e);
         }
