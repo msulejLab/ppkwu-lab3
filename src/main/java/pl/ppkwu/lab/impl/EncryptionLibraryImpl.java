@@ -47,13 +47,9 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
             md.update(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
             byte[] digest = md.digest();
             return DatatypeConverter.printHexBinary(digest).toUpperCase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException("Error while getting file checksum");
         }
-
-        return "";
     }
 
     @Override
