@@ -45,7 +45,24 @@ public class HttpZipLibraryImpl implements HttpZipLibrary {
 
     @Override
     public void zipDirectory(File unzippedDirectory, File zippedDirectory) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(zippedDirectory);
+            ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
 
+            File[] contents = unzippedDirectory.listFiles();
+            for (File f : contents) {
+                if (f.isFile()) {
+                    zipFileInDirectory(f, unzippedDirectory.getName(), zipOutputStream);
+                }
+            }
+
+            zipOutputStream.closeEntry();
+            zipOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
