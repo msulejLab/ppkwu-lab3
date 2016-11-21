@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class HttpZipLibraryImpl implements HttpZipLibrary {
@@ -67,7 +68,36 @@ public class HttpZipLibraryImpl implements HttpZipLibrary {
 
     @Override
     public void unzipFile(File zippedFile, File unzippedFile) {
+        try {
+            File folder = new File(unzippedFile.getName());
+            if(!folder.exists()) {
+                folder.mkdir();
+            }
 
+            byte[] buffer = new byte[1024];
+            ZipInputStream zis = new ZipInputStream(new FileInputStream(zippedFile));
+            ZipEntry zipEntries = zis.getNextEntry();
+
+            while (zipEntries != null){
+                String fileName = zipEntries.getName();
+                File newFile = new File(unzippedFile.getName() + File.separator + fileName);
+
+                new File(newFile.getParent()).mkdirs();
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+
+                fos.close();
+                zipEntries = zis.getNextEntry();
+            }
+
+            zis.closeEntry();
+            zis.close();
+        } catch(IOException ex){
+            ex.printStackTrace();
+        }
     }
 
     private void zipFileInDirectory(File inputFile, String parentName, ZipOutputStream zipOutputStream) {
