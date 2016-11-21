@@ -20,5 +20,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>encryption</finalName>
+        <directory>${project.basedir}/lib</directory>
     </build>
 </project>
