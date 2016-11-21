@@ -28,11 +28,12 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
 
     @Override
     public void encryptFile(File inputFile, File outputFile) {
+        doCrypto(Cipher.ENCRYPT_MODE, inputFile, outputFile);
     }
 
     @Override
     public void decryptFile(File inputFile, File outputFile) {
-
+        doCrypto(Cipher.DECRYPT_MODE, inputFile, outputFile);
     }
 
     @Override
