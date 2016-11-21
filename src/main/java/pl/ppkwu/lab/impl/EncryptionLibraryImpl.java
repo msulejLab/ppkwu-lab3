@@ -22,7 +22,7 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
     private EncryptionKey encryptionKey;
 
     public EncryptionLibraryImpl() {
-        this.encryptionKey = new EncryptionKey("empty");
+        this(new EncryptionKey("ABCDEFghijkl1234"));
     }
 
     public EncryptionLibraryImpl(EncryptionKey encryptionKey) {
