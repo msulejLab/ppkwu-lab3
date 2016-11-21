@@ -75,15 +75,19 @@ public class App {
         }
 
         httpZipLibrary.downloadFile(urlAddress, new File(outputFile));
+
+        System.out.println("Pobrano plik");
     }
 
     private static void handleChecksumFile() {
         System.out.println("Obliczanie sumy kontrolnej");
         String file = input("Nazwa pliku");
         String algorithmInput = input("Algorytm [MD5/SHA]");
+
         ChecksumAlgorithm algorithm = algorithmInput.equalsIgnoreCase("SHA")?
             ChecksumAlgorithm.SHA1 : ChecksumAlgorithm.MD5;
         String checksum = encryptionLibrary.fileChecksum(new File(file), algorithm);
+
         System.out.println("Suma kontrolna pliku: " + checksum);
     }
 
@@ -91,7 +95,10 @@ public class App {
         System.out.println("Wybrano odszyfrowanie pliku");
         String inputFile = input("Plik wejsciowy");
         String outputFile = input("Plik wyjsciowy");
+
         encryptionLibrary.decryptFile(new File(inputFile), new File(outputFile));
+
+        System.out.println("Plik zostal odszyfrowany");
     }
 
     private static void handleEncryptFile() {
@@ -99,27 +106,38 @@ public class App {
         String inputFile = input("Plik wejsciowy");
         String outputFile = input("Plik wyjsciowy");
         encryptionLibrary.encryptFile(new File(inputFile), new File(outputFile));
+
+        System.out.println("Plik zostal zaszyfrowany");
     }
 
     private static void handleZipDirectory() {
         System.out.println("Wybrano kompresje folderu");
         String inputDirectory = input("Folder do skompresowania");
         String outputFile = input("Plik wyjsciowy (.zip)");
+
         httpZipLibrary.unzipFile(new File(inputDirectory), new File(outputFile));
+
+        System.out.println("Folder zostal skompresowany");
     }
 
     private static void handleZipFile() {
         System.out.println("Wybrano kompresje pliku");
         String inputFile = input("Plik do skompresowania");
         String outputFile = input("Plik wyjsciowy (.zip)");
+
         httpZipLibrary.zipFile(new File(inputFile), new File(outputFile));
+
+        System.out.println("Plik zostal skompresowany");
     }
 
     private static void handleUnzipFile() {
         System.out.println("Wybrano dekompresje pliku");
         String inputFile = input("Plik wejsciowy");
         String outputDirectory = input("Folder wyjsciowy");
+
         httpZipLibrary.unzipFile(new File(inputFile), new File(outputDirectory));
+
+        System.out.println("Plik zostal odkompresowany");
     }
 
     private static String input(String name) {
