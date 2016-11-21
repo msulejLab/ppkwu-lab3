@@ -8,5 +8,7 @@ public interface EncryptionLibrary {
 
     void decryptFile(File inputFile, File outputFile);
 
+    String fileChecksum(File file, ChecksumAlgorithm checksumAlgorithm);
+
     void setEnryptionKey(EncryptionKey encryptionKey);
 }
