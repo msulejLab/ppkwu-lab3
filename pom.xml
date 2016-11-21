@@ -20,5 +20,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>http-zip</finalName>
+        <directory>${project.basedir}/lib</directory>
     </build>
 </project>
