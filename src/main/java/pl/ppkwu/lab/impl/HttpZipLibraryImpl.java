@@ -2,11 +2,12 @@ package pl.ppkwu.lab.impl;
 
 import pl.ppkwu.lab.api.HttpZipLibrary;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class HttpZipLibraryImpl implements HttpZipLibrary {
 
@@ -23,7 +24,23 @@ public class HttpZipLibraryImpl implements HttpZipLibrary {
 
     @Override
     public void zipFile(File unzippedFile, File zippedFile) {
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(zippedFile);
+            ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
 
+            if (unzippedFile.isFile()) {
+                String folder = zippedFile.getName().substring(0, zippedFile.getName().indexOf(".zip"));
+                zipFileInDirectory(unzippedFile, folder, zipOutputStream);
+            }
+
+            zipOutputStream.closeEntry();
+            zipOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -34,5 +51,25 @@ public class HttpZipLibraryImpl implements HttpZipLibrary {
     @Override
     public void unzipFile(File zippedFile, File unzippedFile) {
 
+    }
+
+    private void zipFileInDirectory(File inputFile, String parentName, ZipOutputStream zipOutputStream) {
+        try {
+            ZipEntry zipEntry = new ZipEntry(parentName + "\\" + inputFile.getName());
+            zipOutputStream.putNextEntry(zipEntry);
+
+
+            FileInputStream fileInputStream = new FileInputStream(inputFile);
+            byte[] buf = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = fileInputStream.read(buf)) > 0) {
+                zipOutputStream.write(buf, 0, bytesRead);
+            }
+
+            zipOutputStream.closeEntry();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
