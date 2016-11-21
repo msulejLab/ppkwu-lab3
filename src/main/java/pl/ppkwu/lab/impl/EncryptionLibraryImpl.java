@@ -28,7 +28,6 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
 
     @Override
     public void encryptFile(File inputFile, File outputFile) {
-
     }
 
     @Override
@@ -46,9 +45,9 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
         this.encryptionKey = encryptionKey;
     }
 
-    private void doCrypto(int cipherMode, String key, File inputFile, File outputFile) {
+    private void doCrypto(int cipherMode, File inputFile, File outputFile) {
         try {
-            Key secretKey = new SecretKeySpec(key.getBytes(), ALGORITHM);
+            Key secretKey = new SecretKeySpec(encryptionKey.getValue().getBytes(), ALGORITHM);
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(cipherMode, secretKey);
 
