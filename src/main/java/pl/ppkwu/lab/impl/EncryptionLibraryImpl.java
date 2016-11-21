@@ -19,7 +19,7 @@ public class EncryptionLibraryImpl implements EncryptionLibrary {
     private EncryptionKey encryptionKey;
 
     public EncryptionLibraryImpl() {
-        this.encryptionKey = new EncryptionKey("MD5");
+        this.encryptionKey = new EncryptionKey("empty");
     }
 
     public EncryptionLibraryImpl(EncryptionKey encryptionKey) {
