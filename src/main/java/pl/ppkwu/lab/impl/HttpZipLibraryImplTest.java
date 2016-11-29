@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.net.URL;
+import java.util.zip.ZipInputStream;
 
 import static org.junit.Assert.*;
 
@@ -31,13 +32,18 @@ public class HttpZipLibraryImplTest {
 
     @Test
     public void zipFile() throws Exception {
+        File normalFIle = new File("normalfile.txt");
+        File zipFile = new File("zip.zip");
+        httpZipLibrary.zipFile(normalFIle,zipFile);
 
+        assertEquals("nie stworzono pliku",true,zipFile.exists());
 
     }
 
+
     @Test
     public void zipDirectory() throws Exception {
-
+        httpZipLibrary.zipDirectory();
     }
 
     @Test
