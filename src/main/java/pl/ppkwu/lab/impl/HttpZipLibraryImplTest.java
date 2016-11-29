@@ -43,12 +43,18 @@ public class HttpZipLibraryImplTest {
 
     @Test
     public void zipDirectory() throws Exception {
-        httpZipLibrary.zipDirectory();
+        File filesDirectory = new File("files");
+        File zipFile = new File("35.zip");
+        httpZipLibrary.zipDirectory(filesDirectory,zipFile);
+        assertEquals("nie skompresowano",zipFile.exists(),true);
     }
 
     @Test
     public void unzipFile() throws Exception {
-
+        File filesDirectory = new File("slayer");
+        File zipFile = new File("35.zip");
+        httpZipLibrary.zipDirectory(filesDirectory,zipFile);
+        assertEquals("nie skompresowano",filesDirectory.exists(),true);
     }
 
     private boolean sizeofFileBiggerThanZero(File file){
