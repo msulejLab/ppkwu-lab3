@@ -1,5 +1,7 @@
 package pl.ppkwu.lab.impl;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import pl.ppkwu.lab.api.ChecksumAlgorithm;
 
@@ -22,23 +24,24 @@ public class EncryptionLibraryImplTest {
     public void encryptFile() throws Exception {
 
     EncryptionLibraryImpl impl = new EncryptionLibraryImpl();
-        File inputFile = new File("inputFile.txt");
-        File outputFie = new File("outputFile.txt");
+        File inputFile = new File("src/test/resources/inputFile.txt");
+        File outputFie = new File("output/outputFile.txt");
        impl.encryptFile(inputFile , outputFie);
+
     }
 
     @Test
     public void decryptFile() throws Exception {
         EncryptionLibraryImpl impl = new EncryptionLibraryImpl();
-        File outputFile = new File("inputFile.txt");
-        File inputFile = new File("outputFile.txt");
-        impl.decryptFile(inputFile,outputFile);
+        File inputFile = new File("src/test/resources/encryptedFile.txt");
+        File outputFile = new File("output/decryptedFile.txt");
+        impl.decryptFile(inputFile, outputFile);
     }
 
     @Test
     public void fileChecksum() throws Exception {
         EncryptionLibraryImpl impl = new EncryptionLibraryImpl();
-        File inputFile = new File("inputFile.txt");
+        File inputFile = new File("src/test/resources/inputFile.txt");
         assertEquals("noot correct checksum", "C331AA37FF9B71448C81AD85D1FD6447" , impl.fileChecksum(inputFile,ChecksumAlgorithm.MD5));
         assertEquals("noot correct checksum", "D505DF8F193139DF14D225EAC023527DA204228F" ,  impl.fileChecksum(inputFile,ChecksumAlgorithm.SHA1));
 
@@ -63,6 +66,17 @@ public class EncryptionLibraryImplTest {
         }
 
         return true;
+    }
+
+    @AfterClass
+    public static void clean() {
+        File directory = new File("output");
+
+        for(File file: directory.listFiles()) {
+            if (!file.isDirectory()) {
+                file.delete();
+            }
+        }
     }
 
 }

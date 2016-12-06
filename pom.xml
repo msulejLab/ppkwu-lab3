@@ -22,12 +22,6 @@
         </plugins>
         <finalName>encryption</finalName>
         <directory>${project.basedir}/lib</directory>
-
-        <testResources>
-            <testResource>
-                <directory>${project.basedir}/src/test/java</directory>
-            </testResource>
-        </testResources>
     </build>
 
     <dependencies>
